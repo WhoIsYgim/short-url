@@ -12,7 +12,6 @@ const (
 type Generator struct {
 	hd       GenData
 	alphabet []rune
-	deleted  chan string
 }
 
 type GenData struct {

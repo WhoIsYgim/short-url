@@ -56,7 +56,7 @@ func (l *LinkService) CreateShortLink(request *dto.CreateLinkRequest) (*entities
 	if err != nil {
 		return nil, errs.NewAppError(errs.UrlNotValid, err)
 	}
-	link, err := l.repo.GetLinkByOriginal(request.Link)
+	link, _ := l.repo.GetLinkByOriginal(request.Link)
 	if link != nil {
 		link.ShortLink = l.shortlinkPrefix + link.Token
 		return link, nil

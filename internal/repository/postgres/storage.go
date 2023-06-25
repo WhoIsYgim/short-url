@@ -70,7 +70,6 @@ func (ls *LinkStorage) StartRecalculation(interval time.Duration, deleted chan [
 			deleted <- del
 		}
 	}()
-	return
 }
 
 func (ls *LinkStorage) ShutDown() error {
