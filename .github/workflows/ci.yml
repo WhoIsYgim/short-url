@@ -1,4 +1,4 @@
-name: Depeche CI
+name: CI
 
 on:
   push:
