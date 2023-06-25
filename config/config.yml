@@ -1,0 +1,19 @@
+config:
+  service_config:
+    host: "localhost"
+    port: 8080
+    grpc_port: 8081
+    recalculation_interval: 1 # hours
+
+  link_config:
+    expiration: 8760 # one year
+    alphabet: "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890_"
+    token_length:  10
+    recreate_retries: 5
+
+db_config:
+  host: "localhost"
+  port: 5432
+  user: "short_link"
+  database: "short_link"
+  reconnect_retries: 5
