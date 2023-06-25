@@ -2,6 +2,7 @@ package postgres
 
 import (
 	"database/sql"
+	"errors"
 	"github.com/jmoiron/sqlx"
 	"short-link/internal/entities"
 	"short-link/internal/utils"
@@ -29,7 +30,7 @@ func (ls *LinkStorage) GetLinkByOriginal(origLink string) (*entities.Link, error
 	link := &entities.Link{}
 	err := ls.db.QueryRowx(GetLinkByOriginalUrl, origLink).StructScan(link)
 	if err != nil {
-		if err == sql.ErrNoRows {
+		if errors.Is(err, sql.ErrNoRows) {
 			return nil, errs.NotFoundError()
 		}
 		return nil, errs.InternalError(err)

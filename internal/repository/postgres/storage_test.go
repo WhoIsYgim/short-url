@@ -2,6 +2,7 @@ package postgres
 
 import (
 	"database/sql"
+	"errors"
 	"github.com/DATA-DOG/go-sqlmock"
 	"github.com/jmoiron/sqlx"
 	"github.com/stretchr/testify/require"
@@ -78,7 +79,7 @@ func TestLinkStorage_GetLink(t *testing.T) {
 
 			link, err := repo.GetLink(test.token)
 			if test.expectedError != nil {
-				require.ErrorAs(t, err, test.expectedError)
+				require.ErrorIs(t, errors.Unwrap(err), errors.Unwrap(test.expectedError))
 			} else {
 				require.NoError(t, err)
 				require.Equal(t, test.expectedLink, link)
