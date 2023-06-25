@@ -27,6 +27,10 @@ var (
 			http.StatusNotFound,
 			LinkNotFound.Error(),
 		},
+		UrlNotValid: {
+			http.StatusBadRequest,
+			UrlNotValid.Error(),
+		},
 	}
 )
 
@@ -36,6 +40,7 @@ var (
 	UnableToCreateLink  = errors.New("unable to create link")
 
 	LinkNotFound = errors.New("link not found")
+	UrlNotValid  = errors.New("url is not valid")
 )
 
 type AppError struct {

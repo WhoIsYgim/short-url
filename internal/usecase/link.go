@@ -1,8 +1,8 @@
 package usecase
 
 import (
-	"errors"
 	"fmt"
+	"net/url"
 	"short-link/config"
 	"short-link/internal/delivery"
 	"short-link/internal/delivery/http/dto"
@@ -11,6 +11,8 @@ import (
 	"short-link/pkg/errs"
 	"time"
 )
+
+//go:generate mockgen --destination=mocks/link.go short-link/internal/usecase LinkRepository,TokenCache,Generator
 
 type LinkRepository interface {
 	GetLink(token string) (*entities.Link, error)
@@ -38,6 +40,7 @@ type LinkService struct {
 	cfg             *config.Config
 	generator       Generator
 	shortlinkPrefix string
+	deleteChan      chan []string
 }
 
 func (l *LinkService) GetOriginalLink(token string) (string, error) {
@@ -49,8 +52,12 @@ func (l *LinkService) GetOriginalLink(token string) (string, error) {
 }
 
 func (l *LinkService) CreateShortLink(request *dto.CreateLinkRequest) (*entities.Link, error) {
+	_, err := url.ParseRequestURI(request.Link)
+	if err != nil {
+		return nil, errs.NewAppError(errs.UrlNotValid, err)
+	}
 	link, err := l.repo.GetLinkByOriginal(request.Link)
-	if link != nil && !errors.As(err, &errs.LinkNotFound) {
+	if link != nil {
 		link.ShortLink = l.shortlinkPrefix + link.Token
 		return link, nil
 	}
@@ -62,6 +69,7 @@ func (l *LinkService) CreateShortLink(request *dto.CreateLinkRequest) (*entities
 	for exists && retries < l.cfg.LinkConfig.RecreateRetries {
 		token = l.generator.GenString()
 		exists = l.tokenCache.Exists(token)
+		retries++
 	}
 
 	if retries == l.cfg.LinkConfig.RecreateRetries {
@@ -84,9 +92,9 @@ func (l *LinkService) CreateShortLink(request *dto.CreateLinkRequest) (*entities
 }
 
 func NewLinkService(repo LinkRepository, cfg *config.Config, cache TokenCache, strGenerator Generator) delivery.LinkUsecase {
-	deletedChan := make(chan []string)
-	cache.SetRecalculationChan(deletedChan)
-	repo.StartRecalculation(time.Duration(cfg.ServiceConfig.RecalcInterval)*time.Hour, deletedChan)
+	deleteChan := make(chan []string)
+	cache.SetRecalculationChan(deleteChan)
+	repo.StartRecalculation(time.Duration(cfg.ServiceConfig.RecalcInterval)*time.Hour, deleteChan)
 	prefix := fmt.Sprintf("http://%s:%d/url/", cfg.ServiceConfig.Host, cfg.ServiceConfig.Port)
 	return &LinkService{
 		repo:            repo,
@@ -94,5 +102,6 @@ func NewLinkService(repo LinkRepository, cfg *config.Config, cache TokenCache, s
 		generator:       strGenerator,
 		tokenCache:      cache,
 		shortlinkPrefix: prefix,
+		deleteChan:      deleteChan,
 	}
 }

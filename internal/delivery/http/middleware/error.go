@@ -14,7 +14,7 @@ func ErrorMiddleware() gin.HandlerFunc {
 		}
 
 		e := ctx.Errors[0].Unwrap()
-		appErr, ok := e.(errs.AppError)
+		appErr, ok := e.(*errs.AppError)
 
 		var err error
 		if ok {

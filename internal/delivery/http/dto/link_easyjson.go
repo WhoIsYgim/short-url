@@ -17,7 +17,7 @@ var (
 	_ easyjson.Marshaler
 )
 
-func easyjson16eb09bcDecodeShortLinkInternalDeliveryDto(in *jlexer.Lexer, out *CreateLinkResponse) {
+func easyjson16eb09bcDecodeShortLinkInternalDeliveryHttpDto(in *jlexer.Lexer, out *CreateLinkResponse) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -50,7 +50,7 @@ func easyjson16eb09bcDecodeShortLinkInternalDeliveryDto(in *jlexer.Lexer, out *C
 		in.Consumed()
 	}
 }
-func easyjson16eb09bcEncodeShortLinkInternalDeliveryDto(out *jwriter.Writer, in CreateLinkResponse) {
+func easyjson16eb09bcEncodeShortLinkInternalDeliveryHttpDto(out *jwriter.Writer, in CreateLinkResponse) {
 	out.RawByte('{')
 	first := true
 	_ = first
@@ -70,27 +70,27 @@ func easyjson16eb09bcEncodeShortLinkInternalDeliveryDto(out *jwriter.Writer, in 
 // MarshalJSON supports json.Marshaler interface
 func (v CreateLinkResponse) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
-	easyjson16eb09bcEncodeShortLinkInternalDeliveryDto(&w, v)
+	easyjson16eb09bcEncodeShortLinkInternalDeliveryHttpDto(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
 func (v CreateLinkResponse) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjson16eb09bcEncodeShortLinkInternalDeliveryDto(w, v)
+	easyjson16eb09bcEncodeShortLinkInternalDeliveryHttpDto(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
 func (v *CreateLinkResponse) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
-	easyjson16eb09bcDecodeShortLinkInternalDeliveryDto(&r, v)
+	easyjson16eb09bcDecodeShortLinkInternalDeliveryHttpDto(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
 func (v *CreateLinkResponse) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjson16eb09bcDecodeShortLinkInternalDeliveryDto(l, v)
+	easyjson16eb09bcDecodeShortLinkInternalDeliveryHttpDto(l, v)
 }
-func easyjson16eb09bcDecodeShortLinkInternalDeliveryDto1(in *jlexer.Lexer, out *CreateLinkRequest) {
+func easyjson16eb09bcDecodeShortLinkInternalDeliveryHttpDto1(in *jlexer.Lexer, out *CreateLinkRequest) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -121,7 +121,7 @@ func easyjson16eb09bcDecodeShortLinkInternalDeliveryDto1(in *jlexer.Lexer, out *
 		in.Consumed()
 	}
 }
-func easyjson16eb09bcEncodeShortLinkInternalDeliveryDto1(out *jwriter.Writer, in CreateLinkRequest) {
+func easyjson16eb09bcEncodeShortLinkInternalDeliveryHttpDto1(out *jwriter.Writer, in CreateLinkRequest) {
 	out.RawByte('{')
 	first := true
 	_ = first
@@ -136,23 +136,23 @@ func easyjson16eb09bcEncodeShortLinkInternalDeliveryDto1(out *jwriter.Writer, in
 // MarshalJSON supports json.Marshaler interface
 func (v CreateLinkRequest) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
-	easyjson16eb09bcEncodeShortLinkInternalDeliveryDto1(&w, v)
+	easyjson16eb09bcEncodeShortLinkInternalDeliveryHttpDto1(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
 func (v CreateLinkRequest) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjson16eb09bcEncodeShortLinkInternalDeliveryDto1(w, v)
+	easyjson16eb09bcEncodeShortLinkInternalDeliveryHttpDto1(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
 func (v *CreateLinkRequest) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
-	easyjson16eb09bcDecodeShortLinkInternalDeliveryDto1(&r, v)
+	easyjson16eb09bcDecodeShortLinkInternalDeliveryHttpDto1(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
 func (v *CreateLinkRequest) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjson16eb09bcDecodeShortLinkInternalDeliveryDto1(l, v)
+	easyjson16eb09bcDecodeShortLinkInternalDeliveryHttpDto1(l, v)
 }

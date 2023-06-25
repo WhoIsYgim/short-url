@@ -4,6 +4,7 @@ import (
 	"context"
 	"short-link/internal/delivery"
 	"short-link/internal/delivery/http/dto"
+	"short-link/pkg/errs"
 	"short-link/pkg/grpc/api"
 )
 
@@ -19,6 +20,9 @@ func NewLinkHandler(usecase delivery.LinkUsecase) *LinkHandlerGrpc {
 }
 
 func (lh *LinkHandlerGrpc) GetOriginalLink(ctx context.Context, req *api.ShortLinkRequest) (*api.ShortLinkResponse, error) {
+	if req.ShortLink == "" {
+		return nil, errs.BadRequestError()
+	}
 	link, err := lh.usecase.GetOriginalLink(req.ShortLink)
 	if err != nil {
 		return nil, err

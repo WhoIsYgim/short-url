@@ -43,6 +43,10 @@ func (sh *ShortLinkHandler) CreateLink(ctx *gin.Context) {
 		return
 	}
 
+	if input.Link == "" {
+		_ = ctx.Error(errs.BadRequestError())
+		return
+	}
 	link, err := sh.usecase.CreateShortLink(input)
 	if err != nil {
 		_ = ctx.Error(err)
