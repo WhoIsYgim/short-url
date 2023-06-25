@@ -1,0 +1,39 @@
+version: "3.9"
+services:
+  backend:
+    container_name: short_link_app
+    build:
+      context: ./
+      args:
+        db: "pg"
+      dockerfile: Dockerfile
+
+    ports:
+      - "8080:8080"
+      - "8081:8081"
+    links:
+      - "postgres:postgres"
+    depends_on:
+      postgres:
+        condition: service_started
+  postgres:
+    image: postgres:15-alpine
+    container_name: postgres
+    ports:
+      - "5432:5432"
+    env_file:
+      - .env
+    volumes:
+      - db_data:/var/lib/postgresql/data
+      - ./db/1_initdb.sql:/docker-entrypoint-initdb.d/initdb.sql
+
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -d $POSTGRES_DB" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    restart: always
+
+volumes:
+  db_data:
